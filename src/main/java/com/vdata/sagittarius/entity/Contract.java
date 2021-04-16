@@ -1,0 +1,324 @@
+package com.vdata.sagittarius.entity;
+
+import java.io.Serializable;
+
+public class Contract implements Serializable {
+
+    private int id;
+    private LocalDate acceptDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private PhysicalClient man;
+    private List<InsuredPerson> personList=new ArrayList<>();
+    private String acceptDateAsString;
+    private String startDateAsString;
+    private String endDateAsString;
+
+    private static final String CSV_SEPARATOR = ";";
+    /**
+     * internal object Comparator, used for correct work of method "sortPersonsByName" that sort list of Insured Persons
+     * by alphabet
+     */
+    private static final Comparator FIO_COMPARATOR = new Comparator() {
+        /** Override method for sorting that compare FIO Strings
+         * @param o1 InsuredPerson one
+         * @param o2 InsuredPerson two
+         * @return int difference between Strings FIO
+         */
+        @Override
+        public int compare(Object o1, Object o2) {
+            InsuredPerson ip1 = (InsuredPerson) o1;
+            InsuredPerson ip2 = (InsuredPerson) o2;
+
+            return ip1.getSurname().compareTo(ip2.getSurname());
+        }
+    };
+
+
+    /**
+     * @param number  identifies the Contract
+     * @param accDate date of conclusion of our Contract
+     * @param start   date when Contract starts to act
+     * @param end     date when Contract ends to act
+     * @param human   Client(type) that initiate this Contract
+     * @param myList  List of insured persons(generic type InsuredPerson)
+     */
+    public Contract(int number, LocalDate accDate, LocalDate start, LocalDate end, PhysicalClient human, List<InsuredPerson> myList) {
+        this.setId(number);
+        this.setAcceptDate(accDate);
+        this.setStartDate(start);
+        this.setEndDate(end);
+        this.setMan(human);
+        this.setPersonList((ArrayList<InsuredPerson>) myList);
+    }
+
+    /**
+     * Constructs a new Contract with default parameters
+     * Used for avoiding nullPointerExeption
+     */
+    public Contract() {
+        this.setId(0);
+        this.setAcceptDate(LocalDate.of(0, 1, 1));
+        this.setStartDate(LocalDate.of(0, 1, 1));
+        this.setEndDate(LocalDate.of(0, 1, 1));
+        this.setMan(new PhysicalClient());
+        List<InsuredPerson> myList = new ArrayList<>();
+        InsuredPerson ip = new InsuredPerson();
+        myList.add(ip);
+        this.setPersonList((ArrayList<InsuredPerson>) myList);
+    }
+
+    public void addPerson(InsuredPerson e) {
+        personList.add(e);
+        e.setContract(this);
+        System.out.println("Adding Person: " + e.toString());
+    }
+
+    @Override
+    public String toString() {
+
+        DateTimeFormatter form = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String border = "\n----------------------------------------------------\n";
+        return border + "ContractID:\t" + this.getId() + "\nAcceptDate:\t" + this.getAcceptDate().format(form) +
+                "\nStartDate:\t" + this.getStartDate().format(form) + "\nEndDate:\t" + this.getEndDate().format(form)
+                + "\nClient:\t" + this.getMan().toString() + "\nPersonList:" + this.getPersonList();
+    }
+
+    /**
+     * Method that counts and prints the total cost of insurance by the Contract (as the sum of all insured persons)
+     * enumerates the collection and summarizes all the individual values of the insured persons
+     * Implements foreach cycle
+     */
+    public double getTotalCost() {
+        double result = 0;
+        for (InsuredPerson p : this.getPersonList()) {
+            result += p.getPersonalCost();
+        }
+        //сюди додати різні види обходу списку
+        return result;
+    }
+
+
+    /**
+     * Method for sorting Insured Persons by dates of their birthday and watching in console
+     * For correct comparison class InsuredPerson implements method compareTo
+     *
+     * @param persons ArrayList with type of objects - InsuredPerson
+     * @return sorted ArrayList with type - InsuredPerson
+     */
+    public List<InsuredPerson> sortPersonsByDate(List<InsuredPerson> persons) {
+
+        persons.sort((s1,s2)-> (s1.getBtdate().compareTo(s2.getBtdate())));
+
+        return persons;
+
+    }
+
+    /**
+     * Method for sorting Insured Persons by FIO`s by alphabet and watching in console
+     * For correct comparison class Contract has comparator with override method compare
+     *
+     * @param persons ArrayList with type of objects - InsuredPerson
+     * @return sorted ArrayList with type - InsuredPerson
+     */
+    public List<InsuredPerson> sortPersonsByName(List<InsuredPerson> persons) {
+
+        persons.sort(FIO_COMPARATOR);
+        return persons;
+
+    }
+
+    /**
+     * Method for searching Insured Person in ArrayList of persons by it`s unique id
+     * use ListIterator to go through all elements
+     *
+     * @param i int id for search
+     * @return InsuredPerson with expected id
+     */
+    public InsuredPerson getPersonById(int i) {
+        InsuredPerson o = new InsuredPerson();
+
+        for (InsuredPerson element : getPersonList()) {
+            if (element.getId() == i) {
+                return element;
+            }
+        }
+        return o;
+    }
+
+
+    /**
+     * Method save the object Contract and all it`s fields: id, dates, Client, PersonList
+     * object OutputStreamWriter serialize object Contract into one string with line separators
+     */
+    public void saveCSV() {
+
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(".\\src\\Contract"+this.getId()+".csv"), "UTF-8"));) {
+
+            bw.write("id;acceptDate;startDate;endDate;man;personList");
+            bw.newLine();
+            StringBuilder one = new StringBuilder();
+            one.append(this.getId()).append(CSV_SEPARATOR).append(
+                    this.getAcceptDate()).append(CSV_SEPARATOR).append(
+                    this.getStartDate()).append(CSV_SEPARATOR).append(
+                    this.getEndDate()).append(CSV_SEPARATOR);
+            one.append(this.getMan().getPerson()).append(",");
+
+            if("NATURAL".equals(this.getMan().getPerson().toString())){
+                one.append(this.getMan().getName()).append(",");
+                one.append(this.getMan().getMiddleName()).append(",");
+                one.append(this.getMan().getSurname()).append(",");
+            }else if("LEGAL".equals(this.getMan().getPerson())) {
+                one.append(this.getMan().getName()).append(",");
+            }
+            one.append(this.getMan().getCity()).append(",");
+            one.append(this.getMan().getStreet()).append(",");
+            one.append(this.getMan().getBuilding()).append(",");
+            one.append(this.getMan().getId()).append(",");
+            one.append(CSV_SEPARATOR);
+            bw.write(one.toString());
+
+            for (InsuredPerson p : this.getPersonList()) {
+                StringBuilder oneLine = new StringBuilder();
+                oneLine.append(p.getId());
+                oneLine.append(",");
+                oneLine.append(p.getName());
+                oneLine.append(",");
+                oneLine.append(p.getMiddleName());
+                oneLine.append(",");
+                oneLine.append(p.getSurname());
+                oneLine.append(",");
+                oneLine.append(p.getBtdate());
+                oneLine.append(",");
+                oneLine.append(p.getPersonalCost());
+                oneLine.append("/");
+                bw.write(oneLine.toString());
+            }
+
+            bw.write(System.lineSeparator());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     * Method reads our file and split the string like the object with type Contract
+     *
+     * @return deserialized object with type Contract
+     */
+    public Contract uploadCSV() {
+
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(
+                new FileInputStream(".\\src\\Contract"+this.getId()+".csv")));) {
+
+            String line = "";
+
+            br.readLine();
+
+            while ((line = (String) br.readLine()) != null) {
+                String[] details = line.split(CSV_SEPARATOR);
+
+                if (details.length > 0) {
+
+                    String[] foracc = details[1].split("-");
+                    LocalDate acc = LocalDate.of(Integer.parseInt(foracc[0]), Integer.parseInt(foracc[1]), Integer.parseInt(foracc[2]));
+
+                    String[] forstart = details[2].split("-");
+                    LocalDate start = LocalDate.of(Integer.parseInt(forstart[0]), Integer.parseInt(forstart[1]), Integer.parseInt(forstart[2]));
+
+                    String[] forend = details[3].split("-");
+                    LocalDate end = LocalDate.of(Integer.parseInt(forend[0]), Integer.parseInt(forend[1]), Integer.parseInt(forend[2]));
+
+                    String[] forClient = details[4].split(",");
+
+                    PhysicalClient c = null;
+                    if ("NATURAL".equals(forClient[0]))
+
+                        c = new PhysicalClient(Type.NATURAL, forClient[1], forClient[2], forClient[3],forClient[4],forClient[5],forClient[6], Integer.parseInt(forClient[7]));
+                    if (forClient[0].equals("LEGAL"))
+                        c = new PhysicalClient(Type.LEGAL, forClient[1], forClient[2], forClient[3],forClient[4], Integer.parseInt(forClient[7]));
+
+                    String[] listP = details[5].split("/");
+                    ArrayList<InsuredPerson> resList = new ArrayList<>();
+
+                    for (String s : listP) {
+                        String[] concr = s.split(",");
+                        String[] date = concr[4].split("-");
+                        LocalDate d = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+                        double cost = Double.parseDouble(concr[5]);
+                        InsuredPerson i = new InsuredPerson();
+                        int idPerson = Integer.parseInt(concr[0]);
+                        i.setId(idPerson);
+                        i.setSurname(concr[1]);
+                        i.setName(concr[2]);
+                        i.setMiddleName(concr[3]);
+                        i.setBtdate(d);
+                        i.setPersonalCost(cost);
+                        resList.add(i);
+                    }
+
+                    Contract res = new Contract();
+
+                    int identifier= Integer.parseInt(details[0]);
+                    res.setId(identifier);
+                    res.setAcceptDate(acc);
+                    res.setStartDate(start);
+                    res.setEndDate(end);
+                    res.setMan(c);
+                    res.setPersonList(resList);
+
+                    return res;
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new Contract();
+    }
+
+
+    public String getAcceptDateAsString() {
+        return acceptDateAsString;
+    }
+
+    public void setAcceptDateAsString(String acceptDateAsString) {
+
+        String[]str=acceptDateAsString.split("-");
+        LocalDate ld1=LocalDate.of(Integer.parseInt(str[0]),Integer.parseInt(str[1]),
+                Integer.parseInt(str[2]));
+        this.setAcceptDate(ld1);
+        this.acceptDateAsString = acceptDateAsString;
+    }
+
+    public String getStartDateAsString() {
+        return startDateAsString;
+    }
+
+    public void setStartDateAsString(String startDateAsString) {
+        String[]str=startDateAsString.split("-");
+        LocalDate ld1=LocalDate.of(Integer.parseInt(str[0]),Integer.parseInt(str[1]),
+                Integer.parseInt(str[2]));
+        this.setStartDate(ld1);
+        this.startDateAsString = startDateAsString;
+    }
+
+    public String getEndDateAsString() {
+        return endDateAsString;
+    }
+
+    public void setEndDateAsString(String endDateAsString) {
+
+        String[]str=endDateAsString.split("-");
+        LocalDate ld1=LocalDate.of(Integer.parseInt(str[0]),Integer.parseInt(str[1]),
+                Integer.parseInt(str[2]));
+        this.setEndDate(ld1);
+        this.endDateAsString = endDateAsString;
+    }
+}
