@@ -11,6 +11,7 @@ public class PhysicalClient extends Client implements Serializable {
     private LocalDate birthday;
 
     /**
+     *
      * Constructs a new Client with the default parameters
      * Used for avoiding NullPointerExeption
      */

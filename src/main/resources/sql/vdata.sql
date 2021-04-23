@@ -32,6 +32,57 @@ INSERT INTO `client` VALUES (1,'NATURAL','Evstahyi',' Evstahyevich',' Sas','Khar
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+--------------------------------------------------------
+-- Table structure for table `client`
+--------------------------------------------------------
+DROP TABLE IF EXISTS client;
+
+CREATE TABLE client (
+  `id_client` int(11) NOT NULL,
+  `type` enum('NATURAL','LEGAL') NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `middle_name` varchar(45) DEFAULT NULL,
+  `surname` varchar(45) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `street` varchar(45) DEFAULT NULL,
+  `building` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id_client`),
+  UNIQUE KEY `id_client_UNIQUE` (`id_client`),
+  CONSTRAINT `fk_client` FOREIGN KEY (`id_client`) REFERENCES `contract` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
+
+LOCK TABLES `client` WRITE;
+/*!40000 ALTER TABLE `client` DISABLE KEYS */;
+INSERT INTO `client` VALUES (1,'NATURAL','Evstahyi',' Evstahyevich',' Sas','Kharkiv','Nauky','221-b'),(3,'NATURAL','dsaf','sdaf','asdf','asdf','asfd','4'),(4,'NATURAL','Vasilyev','Vasilyi','Vasilyevich','Kyiv','Poetry','35');
+/*!40000 ALTER TABLE `client` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--------------------------------------------------------
+-- Table structure for table `client`
+--------------------------------------------------------
+DROP TABLE IF EXISTS client;
+
+CREATE TABLE client (
+  `id_client` int(11) NOT NULL,
+  `type` enum('NATURAL','LEGAL') NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `middle_name` varchar(45) DEFAULT NULL,
+  `surname` varchar(45) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `street` varchar(45) DEFAULT NULL,
+  `building` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id_client`),
+  UNIQUE KEY `id_client_UNIQUE` (`id_client`),
+  CONSTRAINT `fk_client` FOREIGN KEY (`id_client`) REFERENCES `contract` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
+
+LOCK TABLES `client` WRITE;
+/*!40000 ALTER TABLE `client` DISABLE KEYS */;
+INSERT INTO `client` VALUES (1,'NATURAL','Evstahyi',' Evstahyevich',' Sas','Kharkiv','Nauky','221-b'),(3,'NATURAL','dsaf','sdaf','asdf','asdf','asfd','4'),(4,'NATURAL','Vasilyev','Vasilyi','Vasilyevich','Kyiv','Poetry','35');
+/*!40000 ALTER TABLE `client` ENABLE KEYS */;
+UNLOCK TABLES;
+
 --------------------------------------------------------
 -- Table structure for table `contract`
 --------------------------------------------------------
