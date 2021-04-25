@@ -1,71 +1,36 @@
 package com.vdata.sagittarius.entity;
 
-import java.io.Serializable;
+import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
-public class Contract implements Serializable {
+public class Contract implements Serializable, Entity {
 
-    private int id;
     private LocalDate acceptDate;
     private LocalDate startDate;
     private LocalDate endDate;
-    private PhysicalClient man;
-    private List<InsuredPerson> personList=new ArrayList<>();
-    private String acceptDateAsString;
-    private String startDateAsString;
-    private String endDateAsString;
+    private Client client;
+    private List<InsuredPerson> personList;
 
     private static final String CSV_SEPARATOR = ";";
-    /**
-     * internal object Comparator, used for correct work of method "sortPersonsByName" that sort list of Insured Persons
-     * by alphabet
-     */
-    private static final Comparator FIO_COMPARATOR = new Comparator() {
-        /** Override method for sorting that compare FIO Strings
-         * @param o1 InsuredPerson one
-         * @param o2 InsuredPerson two
-         * @return int difference between Strings FIO
-         */
-        @Override
-        public int compare(Object o1, Object o2) {
-            InsuredPerson ip1 = (InsuredPerson) o1;
-            InsuredPerson ip2 = (InsuredPerson) o2;
-
-            return ip1.getSurname().compareTo(ip2.getSurname());
-        }
-    };
 
 
-    /**
-     * @param number  identifies the Contract
-     * @param accDate date of conclusion of our Contract
-     * @param start   date when Contract starts to act
-     * @param end     date when Contract ends to act
-     * @param human   Client(type) that initiate this Contract
-     * @param myList  List of insured persons(generic type InsuredPerson)
-     */
-    public Contract(int number, LocalDate accDate, LocalDate start, LocalDate end, PhysicalClient human, List<InsuredPerson> myList) {
-        this.setId(number);
-        this.setAcceptDate(accDate);
-        this.setStartDate(start);
-        this.setEndDate(end);
-        this.setMan(human);
-        this.setPersonList((ArrayList<InsuredPerson>) myList);
+    public Contract(LocalDate accDate, LocalDate start, LocalDate end, Client customer, List<InsuredPerson> persons) {
+
+        acceptDate=accDate;
+        startDate=start;
+        endDate=end;
+        client=customer;
+        personList=persons;
+
     }
 
-    /**
-     * Constructs a new Contract with default parameters
-     * Used for avoiding nullPointerExeption
-     */
+
     public Contract() {
-        this.setId(0);
-        this.setAcceptDate(LocalDate.of(0, 1, 1));
-        this.setStartDate(LocalDate.of(0, 1, 1));
-        this.setEndDate(LocalDate.of(0, 1, 1));
-        this.setMan(new PhysicalClient());
-        List<InsuredPerson> myList = new ArrayList<>();
-        InsuredPerson ip = new InsuredPerson();
-        myList.add(ip);
-        this.setPersonList((ArrayList<InsuredPerson>) myList);
+        personList=new ArrayList<>();
     }
 
     public void addPerson(InsuredPerson e) {
@@ -81,7 +46,7 @@ public class Contract implements Serializable {
         String border = "\n----------------------------------------------------\n";
         return border + "ContractID:\t" + this.getId() + "\nAcceptDate:\t" + this.getAcceptDate().format(form) +
                 "\nStartDate:\t" + this.getStartDate().format(form) + "\nEndDate:\t" + this.getEndDate().format(form)
-                + "\nClient:\t" + this.getMan().toString() + "\nPersonList:" + this.getPersonList();
+                + "\nClient:\t" + this.getClient().toString() + "\nPersonList:" + this.getPersonList();
     }
 
     /**
@@ -100,6 +65,26 @@ public class Contract implements Serializable {
 
 
     /**
+     * internal object Comparator, used for correct work of method "sortPersonsByName" that sort list of Insured Persons
+     * by alphabet
+     */
+    private static final Comparator FIO_COMPARATOR = new Comparator() {
+        /** Override method for sorting that compare FIO Strings
+         * @param o1 InsuredPerson one
+         * @param o2 InsuredPerson two
+         * @return int difference between Strings FIO
+         */
+        @Override
+        public int compare(Object o1, Object o2) {
+            InsuredPerson person1 = (InsuredPerson) o1;
+            InsuredPerson person2 = (InsuredPerson) o2;
+
+            return person1.getClient().getSurname().compareTo(person2.getClient().getSurname());
+        }
+    };
+
+
+    /**
      * Method for sorting Insured Persons by dates of their birthday and watching in console
      * For correct comparison class InsuredPerson implements method compareTo
      *
@@ -108,7 +93,7 @@ public class Contract implements Serializable {
      */
     public List<InsuredPerson> sortPersonsByDate(List<InsuredPerson> persons) {
 
-        persons.sort((s1,s2)-> (s1.getBtdate().compareTo(s2.getBtdate())));
+        persons.sort( (s1,s2) -> (s1.getClient().getBirthday().compareTo( s2.getClient().getBirthday() ) ) );
 
         return persons;
 
@@ -156,42 +141,43 @@ public class Contract implements Serializable {
         try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(".\\src\\Contract"+this.getId()+".csv"), "UTF-8"));) {
 
-            bw.write("id;acceptDate;startDate;endDate;man;personList");
+            bw.write("id;acceptDate;startDate;endDate;client;personList");
             bw.newLine();
             StringBuilder one = new StringBuilder();
             one.append(this.getId()).append(CSV_SEPARATOR).append(
                     this.getAcceptDate()).append(CSV_SEPARATOR).append(
                     this.getStartDate()).append(CSV_SEPARATOR).append(
                     this.getEndDate()).append(CSV_SEPARATOR);
-            one.append(this.getMan().getPerson()).append(",");
+            one.append(this.getClient().getPersonType()).append(",");
 
-            if("NATURAL".equals(this.getMan().getPerson().toString())){
-                one.append(this.getMan().getName()).append(",");
-                one.append(this.getMan().getMiddleName()).append(",");
-                one.append(this.getMan().getSurname()).append(",");
-            }else if("LEGAL".equals(this.getMan().getPerson())) {
-                one.append(this.getMan().getName()).append(",");
+            if("PHYSICAL".equals(this.getClient().getPersonType().toString())){
+                PhysicalClient pc = (PhysicalClient) this.getClient();
+                one.append(pc.getFirstName()).append(",");
+                one.append(pc.getMidName()).append(",");
+                one.append(pc.getSurname()).append(",");
+            }else if("JURIDICAL".equals(this.getClient().getPersonType().toString())) {
+                JuridicalClient jc = (JuridicalClient) this.getClient();
+                one.append(jc.getCompanyName()).append(",");
             }
-            one.append(this.getMan().getCity()).append(",");
-            one.append(this.getMan().getStreet()).append(",");
-            one.append(this.getMan().getBuilding()).append(",");
-            one.append(this.getMan().getId()).append(",");
+            one.append(this.getClient().getCity()).append(",");
+            one.append(this.getClient().getStreet()).append(",");
+            one.append(this.getClient().getId()).append(",");
             one.append(CSV_SEPARATOR);
             bw.write(one.toString());
 
-            for (InsuredPerson p : this.getPersonList()) {
+            for (InsuredPerson ip1 : this.getPersonList()) {
                 StringBuilder oneLine = new StringBuilder();
-                oneLine.append(p.getId());
+                oneLine.append(ip1.getId());
                 oneLine.append(",");
-                oneLine.append(p.getName());
+                oneLine.append(ip1.getClient().getFirstName());
                 oneLine.append(",");
-                oneLine.append(p.getMiddleName());
+                oneLine.append(ip1.getClient().getMidName());
                 oneLine.append(",");
-                oneLine.append(p.getSurname());
+                oneLine.append(ip1.getClient().getSurname());
                 oneLine.append(",");
-                oneLine.append(p.getBtdate());
+                oneLine.append(ip1.getClient().getBirthday());
                 oneLine.append(",");
-                oneLine.append(p.getPersonalCost());
+                oneLine.append(ip1.getPersonalCost());
                 oneLine.append("/");
                 bw.write(oneLine.toString());
             }
@@ -237,12 +223,13 @@ public class Contract implements Serializable {
                     String[] forClient = details[4].split(",");
 
                     PhysicalClient c = null;
-                    if ("NATURAL".equals(forClient[0]))
-
-                        c = new PhysicalClient(Type.NATURAL, forClient[1], forClient[2], forClient[3],forClient[4],forClient[5],forClient[6], Integer.parseInt(forClient[7]));
-                    if (forClient[0].equals("LEGAL"))
-                        c = new PhysicalClient(Type.LEGAL, forClient[1], forClient[2], forClient[3],forClient[4], Integer.parseInt(forClient[7]));
-
+//                    if ("PHYSICAL".equals(forClient[0])) {
+//
+//                        c = new PhysicalClient(PersonType.PHYSICAL, forClient[1], forClient[2], forClient[3], forClient[4], forClient[5], forClient[6], Integer.parseInt(forClient[7]));
+//
+//                    }else if (forClient[0].equals("JURIDICAL")) {
+//                        c = new JuridicalClient(PersonType.JURIDICAL, forClient[1], forClient[2], forClient[3], forClient[4], Integer.parseInt(forClient[7]));
+//                    }
                     String[] listP = details[5].split("/");
                     ArrayList<InsuredPerson> resList = new ArrayList<>();
 
@@ -251,15 +238,11 @@ public class Contract implements Serializable {
                         String[] date = concr[4].split("-");
                         LocalDate d = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
                         double cost = Double.parseDouble(concr[5]);
-                        InsuredPerson i = new InsuredPerson();
+                        InsuredPerson insuredPerson = new InsuredPerson();
                         int idPerson = Integer.parseInt(concr[0]);
-                        i.setId(idPerson);
-                        i.setSurname(concr[1]);
-                        i.setName(concr[2]);
-                        i.setMiddleName(concr[3]);
-                        i.setBtdate(d);
-                        i.setPersonalCost(cost);
-                        resList.add(i);
+                        insuredPerson.setId(idPerson);
+                        insuredPerson.setPersonalCost(cost);
+                        resList.add(insuredPerson);
                     }
 
                     Contract res = new Contract();
@@ -269,7 +252,7 @@ public class Contract implements Serializable {
                     res.setAcceptDate(acc);
                     res.setStartDate(start);
                     res.setEndDate(end);
-                    res.setMan(c);
+                    res.setClient(c);
                     res.setPersonList(resList);
 
                     return res;
@@ -284,41 +267,50 @@ public class Contract implements Serializable {
     }
 
 
-    public String getAcceptDateAsString() {
-        return acceptDateAsString;
+    public LocalDate setDateAsString(String date) {
+
+        String[]str=date.split("-");
+        LocalDate localDate=LocalDate.of(Integer.parseInt(str[0]),Integer.parseInt(str[1]),Integer.parseInt(str[2]));
+        return localDate;
     }
 
-    public void setAcceptDateAsString(String acceptDateAsString) {
-
-        String[]str=acceptDateAsString.split("-");
-        LocalDate ld1=LocalDate.of(Integer.parseInt(str[0]),Integer.parseInt(str[1]),
-                Integer.parseInt(str[2]));
-        this.setAcceptDate(ld1);
-        this.acceptDateAsString = acceptDateAsString;
+    public LocalDate getAcceptDate() {
+        return acceptDate;
     }
 
-    public String getStartDateAsString() {
-        return startDateAsString;
+    public void setAcceptDate(LocalDate acceptDate) {
+        this.acceptDate = acceptDate;
     }
 
-    public void setStartDateAsString(String startDateAsString) {
-        String[]str=startDateAsString.split("-");
-        LocalDate ld1=LocalDate.of(Integer.parseInt(str[0]),Integer.parseInt(str[1]),
-                Integer.parseInt(str[2]));
-        this.setStartDate(ld1);
-        this.startDateAsString = startDateAsString;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public String getEndDateAsString() {
-        return endDateAsString;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public void setEndDateAsString(String endDateAsString) {
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 
-        String[]str=endDateAsString.split("-");
-        LocalDate ld1=LocalDate.of(Integer.parseInt(str[0]),Integer.parseInt(str[1]),
-                Integer.parseInt(str[2]));
-        this.setEndDate(ld1);
-        this.endDateAsString = endDateAsString;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public List<InsuredPerson> getPersonList() {
+        return personList;
+    }
+
+    public void setPersonList(List<InsuredPerson> personList) {
+        this.personList = personList;
     }
 }
