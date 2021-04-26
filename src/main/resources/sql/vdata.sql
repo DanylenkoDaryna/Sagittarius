@@ -141,3 +141,9 @@ UNLOCK TABLES;
 
 
 ------------------------------------------------------
+
+SELECT * FROM client;
+
+SELECT * FROM contract;
+
+SELECT * FROM insured_person;
