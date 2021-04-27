@@ -9,17 +9,25 @@ public class JuridicalClient extends Client implements Serializable {
     public JuridicalClient() {
     }
 
+    public JuridicalClient(String company) {
+        companyName=company;
+    }
+
     @Override
     public String toString() {
+
         return "Person:" + this.getPersonType() + "\tName:" + this.getCompanyName() +
                 "\t Address:" + this.getCity()+", st. "+ this.getStreet()+";\n";
+
     }
 
     @Override
     public boolean equals(Object o) {   // Необходима перегрузка метода!!!
+
         if (!(o instanceof PhysicalClient))
             return false;
         return ((PhysicalClient)o).getId() == this.id;
+        
     }
 
     @Override
