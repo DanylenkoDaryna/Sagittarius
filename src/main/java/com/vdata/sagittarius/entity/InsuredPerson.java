@@ -24,9 +24,11 @@ public class InsuredPerson implements Serializable, Entity {
      */
     @Override
     public String toString() {
+
         DateTimeFormatter form = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return "id: " + this.getId() + "\tFIO:" + outFIO(this.getClient()) +
                 "\tType:" +this.getClient().getPersonType().toString() + "\tCost:" + this.getPersonalCost();
+
     }
 
 

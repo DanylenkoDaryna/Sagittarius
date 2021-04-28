@@ -18,6 +18,7 @@ public class JuridicalClient extends Client implements Serializable {
 
         return "Person:" + this.getPersonType() + "\tName:" + this.getCompanyName() +
                 "\t Address:" + this.getCity()+", st. "+ this.getStreet()+";\n";
+        
 
     }
 
@@ -27,7 +28,7 @@ public class JuridicalClient extends Client implements Serializable {
         if (!(o instanceof PhysicalClient))
             return false;
         return ((PhysicalClient)o).getId() == this.id;
-        
+
     }
 
     @Override

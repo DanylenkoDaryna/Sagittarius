@@ -2,7 +2,9 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
     <!--RollingFileAppender - щодня обертайте файли журналу або коли розмір файлу> 10 Мб.-->
+
     <appender name="application" class="org.apache.log4j.RollingFileAppender">
         <param name="File" value="${catalina.home}/logs/app.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>

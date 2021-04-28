@@ -19,7 +19,9 @@ public abstract class Client implements Entity {
     }
 
     public void setCity(String city) {
+
         this.city = city;
+
     }
 
     public String getStreet() {
