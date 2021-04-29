@@ -18,7 +18,7 @@ public class JuridicalClient extends Client implements Serializable {
 
         return "Person:" + this.getPersonType() + "\tName:" + this.getCompanyName() +
                 "\t Address:" + this.getCity()+", st. "+ this.getStreet()+";\n";
-        
+
 
     }
 
