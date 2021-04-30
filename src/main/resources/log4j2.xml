@@ -1,71 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+<!--built-in levels includes TRACE, DEBUG, INFO, WARN, ERROR, and FATAL-->
+<Configuration status="warn" monitorInterval="30">
 
-    <!--RollingFileAppender - щодня обертайте файли журналу або коли розмір файлу> 10 Мб.-->
+    <!-- Logging Properties -->
+    <Properties>
+        <!--The first field is the number of milliseconds elapsed since the start of the program.-->
+        <!--The second field is the thread making the log request. -->
+        <!--The third field is the level of the log statement. -->
+        <!--The fourth field is the name of the logger associated with the log request. -->
+        <!--The text after the '-' is the message of the statement.-->
+        <Property name="LOG_PATTERN">%r [%t] %d{dd-MM-yyyy HH:mm:ss.SSS} %-5p %c %m%n</Property>
+        <Property name="APP_LOG_ROOT">D:\\project_logs\\sagittarius_log</Property>
+    </Properties>
 
-    <appender name="application" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="${catalina.home}/logs/app.log"/>
-        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
-        <param name="MaxFileSize" value="150MB"/>
-        <param name="MaxBackupIndex" value="5"/>
-        <param name="Encoding" value="UTF-8"/>
-        <!--A flexible layout configurable with pattern string. -->
-        <!--The goal of this class is to format a LoggingEvent and-->
-        <!--return the results in a StringBuffer. The format of -->
-        <!--the result depends on the conversion pattern.-->
-        <layout class="org.apache.log4j.EnhancedPatternLayout">
-            <param name="ConversionPattern" value="%d{ISO8601} [%-5p][%-16.16t][%30c{-2}] - %m%n"/>
-        </layout>
-    </appender>
+    <Appenders>
 
-    <appender name="database" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="${catalina.home}/logs/db.log"/>
-        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
-        <param name="Encoding" value="UTF-8"/>
-        <!--%5p: It writes the level in the log. The 5 in the %5p is to set the width of the field to the 5 characters-->
-        <!--%d{yyyy-MM-dd HH:mm:ss.SSS}: It writes the date in the given date-time format-->
-        <!--%t: It writes the method name in the log-->
-        <!--%c: It writes the absolute class name (For e.g. com.jcg.log4j2.demo) in the log-->
-        <!--For example, for the category name "alpha.beta.gamma" -->
-        <!--the pattern %c{2} will output the last two elements -->
-        <!--("beta.gamma"), %c{-2} will remove two elements -->
-        <!--leaving "gamma"-->
-        <!--%m%n: It writes the message to the log-->
-        <!--%L: It writes the line number in the log-->
-        <!--%F: It writes the class name in the log -->
-        <layout class="org.apache.log4j.EnhancedPatternLayout">
-            <param name="ConversionPattern" value="%d{ISO8601} [%-5p][%-16.16t][%30c{-2}] - %m%n"/>
-        </layout>
-    </appender>
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
 
-    <appender name="web" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="${catalina.home}/logs/web.log"/>
-        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
-        <param name="Encoding" value="UTF-8"/>
-        <layout class="org.apache.log4j.EnhancedPatternLayout">
-            <param name="ConversionPattern" value="%d{ISO8601} [%-5p][%-16.16t][%30c{-2}] - %m%n"/>
-        </layout>
-    </appender>
+        <!-- File Appenders on need basis -->
+        <RollingFile name="appLog" fileName="${APP_LOG_ROOT}/app.log"
+                     filePattern="${APP_LOG_ROOT}/app-%d{yyyy-MM-dd}-%i.log">
+            <LevelRangeFilter minLevel="INFO" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10000KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
 
-    <logger name="app">
-        <level value="DEBUG"/>
-        <appender-ref ref="application"/>
-    </logger>
+        <RollingFile name="debugLog" fileName="${APP_LOG_ROOT}/app-debug.log"
+                     filePattern="${APP_LOG_ROOT}/app-debug-%d{yyyy-MM-dd}-%i.log">
+            <LevelRangeFilter minLevel="DEBUG" maxLevel="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10000KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
 
-    <logger name="jdbc" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="database"/>
-    </logger>
-    <logger name="servlets" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="web"/>
-    </logger>
-    <!-- Root Logger -->
-    <root>
-        <priority value ="DEBUG" />
-        <appender-ref ref="application"/>
-    </root>
+        <RollingFile name="infoLog" fileName="${APP_LOG_ROOT}/app-info.log"
+                     filePattern="${APP_LOG_ROOT}/app-info-%d{yyyy-MM-dd}-%i.log" >
+            <LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10000KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
 
-</log4j:configuration>
+        <RollingFile name="errorLog" fileName="${APP_LOG_ROOT}/app-error.log"
+                     filePattern="${APP_LOG_ROOT}/app-error-%d{yyyy-MM-dd}-%i.log" >
+            <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10000KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <RollingFile name="perfLog" fileName="${APP_LOG_ROOT}/app-perf.log"
+                     filePattern="${APP_LOG_ROOT}/app-perf-%d{yyyy-MM-dd}-%i.log" >
+
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10000KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="1"/>
+        </RollingFile>
+
+        <RollingFile name="traceLog" fileName="${APP_LOG_ROOT}/app-trace.log"
+                     filePattern="${APP_LOG_ROOT}/app-trace-%d{yyyy-MM-dd}-%i.log" >
+            <LevelRangeFilter minLevel="TRACE" maxLevel="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10000KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="1"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <!--//тут ми фільтруємо які статуси будуть друкуватися у різних місцях програми-->
+        <!--наприклад, тут у класі Demo можна записувати логи зі статусом інфо у файл із інфологами,-->
+        <!--у консоль та в інші місця цей інфолог не потрапить-->
+        <!--level - показуємо обмеження для статусів, які можна записати у цей фільтр, тобто-->
+        <!--потрапляють інфо та нижчі, якщо написати error замість info, то інфолог ніяк не запишеться-->
+        <Logger name="com.vdata.sagittarius.Demo" additivity="false" level="info">
+            <AppenderRef ref="infoLog" />
+            <AppenderRef ref="Console" />
+        </Logger>
+
+        <Logger name="com.vdata.sagittarius.SagittariusApplicationTests" additivity="false" level="debug">
+            <AppenderRef ref="debugLog" />
+            <AppenderRef ref="infoLog"  />
+            <AppenderRef ref="errorLog" />
+            <AppenderRef ref="Console"  />
+        </Logger>
+
+        <Logger name="com.vdata.sagittarius.dao" additivity="false" level="debug">
+            <AppenderRef ref="debugLog" />
+            <AppenderRef ref="infoLog"  />
+            <AppenderRef ref="errorLog" />
+            <AppenderRef ref="Console"  />
+        </Logger>
+
+        <Logger name="com.vdata.sagittarius.service" additivity="false" level="info">
+            <AppenderRef ref="traceLog" />
+        </Logger>
+
+        <Logger name="logger for every trash idea" additivity="false" level="trace">
+            <AppenderRef ref="debugLog" />
+            <AppenderRef ref="infoLog"  />
+            <AppenderRef ref="errorLog" />
+            <AppenderRef ref="Console"  />
+            <AppenderRef ref="traceLog" />
+        </Logger>
+
+        <Root level="warn">
+            <AppenderRef ref="Console"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
