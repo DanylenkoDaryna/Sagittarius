@@ -1,6 +1,10 @@
 package com.vdata.sagittarius.entity;
 
-public abstract class Client implements Entity {
+
+import javax.persistence.Entity;
+
+@Entity
+public abstract class Client extends IEntity {
 
     private PersonType personType;
     private String city;

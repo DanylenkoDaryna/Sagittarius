@@ -3,7 +3,7 @@ package com.vdata.sagittarius.entity;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 
-public class InsuredPerson implements Serializable, Entity {
+public class InsuredPerson implements Serializable, IEntity {
 
 
     private int uniqueNum;
