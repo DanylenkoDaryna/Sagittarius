@@ -5,11 +5,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import org.springframework.boot.SpringApplication;
 
 @SpringBootApplication
-public class SagittariusApplication implements CommandLineRunner {
+//public class SagittariusApplication implements CommandLineRunner {
+public class SagittariusApplication {
 
 	private static final Logger LOGGER = LogManager.getLogger(SagittariusApplication.class.getName());
 
@@ -20,9 +20,9 @@ public class SagittariusApplication implements CommandLineRunner {
 	}
 
 
-    @Override
-    public void run(String... strings) throws Exception {
-
-    }
+//    @Override
+//    public void run(String... strings) throws Exception {
+//
+//    }
 
 }
