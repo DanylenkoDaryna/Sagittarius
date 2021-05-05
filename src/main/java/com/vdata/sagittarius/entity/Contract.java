@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Contract implements Serializable, IEntity {
+public class Contract extends IEntity implements Serializable {
 
     private LocalDate acceptDate;
     private LocalDate startDate;

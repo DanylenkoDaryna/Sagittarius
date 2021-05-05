@@ -2,10 +2,12 @@
 -- Host: localhost    Database: localhost
 -- Server version	10.1.21-MariaDB
 -- ------------------------------------------------------
+SET NAMES utf8;
+DROP DATABASE IF EXISTS sagittarius;
 
-DROP DATABASE vdata IF EXISTS;
-CREATE DATABASE vdata;
-USE vdata;
+
+CREATE DATABASE sagittarius CHARACTER SET utf8 COLLATE utf8_bin;
+USE sagittarius;
 
 --------------------------------------------------------
 -- Table structure for table `client`
@@ -44,13 +46,13 @@ CREATE TABLE client (
   street VARCHAR(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
 
-LOCK TABLES client WRITE;
+--LOCK TABLES client WRITE;
 
-INSERT INTO client VALUES (DEFAULT,'PHYSICAL','Kharkiv', 'Sumska St. 45a', 1),
-                            (DEFAULT,'PHYSICAL','Kharkiv', 'Klochkivska St. 97b', 2),
-                            (DEFAULT,'JURIDICAL','Detroit', 'Lincoln St. 2/3 ave',1);
+INSERT INTO client VALUES (DEFAULT, 'PHYSICAL', 'Kharkiv', 'Sumska St. 45a'),
+                            (DEFAULT, 'PHYSICAL', 'Kharkiv', 'Klochkivska St. 97b'),
+                            (DEFAULT, 'JURIDICAL', 'Detroit', 'Lincoln St. 2/3 ave');
 
-UNLOCK TABLES;
+--UNLOCK TABLES;
 --------------------------------------------------------
 -- Table structure for table `client`
 --------------------------------------------------------
@@ -58,19 +60,23 @@ DROP TABLE IF EXISTS physical_client;
 
 CREATE TABLE physical_client (
   id INTEGER NOT NULL auto_increment UNIQUE PRIMARY KEY,
-  first_name VARCHAR(20) DEFAULT NULL,
-  mid_name VARCHAR(20) DEFAULT NULL,
-  surname VARCHAR(20) DEFAULT NULL,
+  first_name VARCHAR(15) DEFAULT NULL,
+  mid_name VARCHAR(15) DEFAULT NULL,
+  surname VARCHAR(15) DEFAULT NULL,
   id_client INT NOT NULL,
-  CONSTRAINT fk_id_client FOREIGN KEY (id_client) REFERENCES client (id) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
+  CONSTRAINT 'fk_id_client'
+    FOREIGN KEY (id_client) REFERENCES client (id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT
+) ENGINE=InnoDB;
 
-LOCK TABLES physical_client WRITE;
 
-INSERT INTO physical_client VALUES (DEFAULT,'Serhiy','Feliksovych','Semenets'),
-                                    (DEFAULT,'Ganna','Oleksiivna','Burko');
+--LOCK TABLES physical_client WRITE;
 
-UNLOCK TABLES;
+INSERT INTO physical_client VALUES (DEFAULT, 'Serhiy', 'Feliksovych', 'Semenets', 1),
+                                    (DEFAULT, 'Ganna', 'Oleksiivna', 'Burko', 2);
+
+--UNLOCK TABLES;
 --------------------------------------------------------
 -- Table structure for table `client`
 --------------------------------------------------------
@@ -80,69 +86,76 @@ CREATE TABLE juridical_client (
   id INTEGER NOT NULL auto_increment UNIQUE PRIMARY KEY,
   company_name VARCHAR(45) DEFAULT NULL,
   id_client INT NOT NULL,
-  CONSTRAINT fk_id_client FOREIGN KEY (id_client) REFERENCES client (id) ON DELETE CASCADE ON UPDATE RESTRICT
+  FOREIGN KEY (id_client) REFERENCES client (id) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
 
-LOCK TABLES juridical_client WRITE;
+--LOCK TABLES juridical_client WRITE;
 
-INSERT INTO juridical_client VALUES (DEFAULT,'Cyberlife LTD');
+INSERT INTO juridical_client VALUES (DEFAULT, 'Cyberlife LTD', 3);
 
-UNLOCK TABLES;
+--UNLOCK TABLES;
 
 --------------------------------------------------------
 -- Table structure for table `contract`
 --------------------------------------------------------
 
 DROP TABLE IF EXISTS contract;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 
 CREATE TABLE contract (
   id INTEGER NOT NULL auto_increment UNIQUE PRIMARY KEY,
   accept_date date DEFAULT NULL,
   start_date date DEFAULT NULL,
-  end_date date DEFAULT NULL,
+  end_date date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
 
 
-LOCK TABLES contract WRITE;
-/*!40000 ALTER TABLE `contract` DISABLE KEYS */;
+--LOCK TABLES contract WRITE;
+
 INSERT INTO contract VALUES (DEFAULT,'1997-12-12','2017-08-23','2018-08-23');
-/*!40000 ALTER TABLE `contract` ENABLE KEYS */;
-UNLOCK TABLES;
+
+--UNLOCK TABLES;
 
 --------------------------------------------------------
 -- Table structure for table `insured_person`
 --------------------------------------------------------
 
 DROP TABLE IF EXISTS insured_person;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
+
+USE sagittarius;
+
+
 CREATE TABLE insured_person (
-  id INTEGER NOT NULL auto_increment UNIQUE PRIMARY KEY,
-  unique_num INTEGER auto_increment UNIQUE NOT NULL,
-  personal_cost double NOT NULL DEFAULT 0.0,
-  client_id INTEGER NOT NULL,
-  contract_id INTEGER NOT NULL,
-  CONSTRAINT fk_id_client FOREIGN KEY (client_id) REFERENCES client (id) ON DELETE CASCADE ON UPDATE RESTRICT
-  CONSTRAINT fk_id_contract FOREIGN KEY (contract_id) REFERENCES contract (id) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=cp1251;
+  id INT NOT NULL auto_increment PRIMARY KEY,
+  --  не може бути більше одного поля із автоінкрементом, тому унікальний номер на мені
+  unique_num INT UNIQUE NOT NULL,
+  personal_cost double NOT NULL,
+  client_id INT NOT NULL,
+  contract_id INT NOT NULL,
+--  мають бути унікальні імена обмежень в рамках усієї бд
+  CONSTRAINT fk_client FOREIGN KEY (client_id) REFERENCES client (id) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT fk_contract FOREIGN KEY (contract_id) REFERENCES contract (contract_id) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
 
 
 --------------------------------------------------------
 
-LOCK TABLES insured_person WRITE;
+--LOCK TABLES insured_person WRITE;
 /*!40000 ALTER TABLE `insured_person` DISABLE KEYS */;
-INSERT INTO insured_person VALUES (DEFAULT, DEFAULT, 422.8, 1, 1),
-                                    (DEFAULT, DEFAULT, 223.5, 2, 1);
+INSERT INTO insured_person VALUES (DEFAULT, 34, 422.8, 1, 1),
+                                    (DEFAULT, 85, 223.5, 2, 1);
 /*!40000 ALTER TABLE `insured_person` ENABLE KEYS */;
-UNLOCK TABLES;
+--UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 
 ------------------------------------------------------
 
 SELECT * FROM client;
+
+SELECT * FROM juridical_client;
+
+SELECT * FROM physical_client;
 
 SELECT * FROM contract;
 
