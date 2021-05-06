@@ -1,13 +1,16 @@
 package com.vdata.sagittarius.entity;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Contract extends IEntity implements Serializable {
+
+    private static final Logger LOGGER = LogManager.getLogger("com.vdata.sagittarius.Demo");
 
     private LocalDate acceptDate;
     private LocalDate startDate;
@@ -55,14 +58,136 @@ public class Contract extends IEntity implements Serializable {
      * Implements foreach cycle
      */
     public double getTotalCost() {
-        double result = 0;
-        for (InsuredPerson p : this.getPersonList()) {
-            result += p.getPersonalCost();
-        }
-        //сюди додати різні види обходу списку
+
+        LOGGER.info("сюди додати різні види обходу списку: /n");
+
+        //1)
+        double result = getTotalCost1();
+        LOGGER.info("total cost 1 = " + result + "/n");
+
+        //2)
+        result = getTotalCost2();
+        LOGGER.info("total cost 2 = " + result + "/n");
+
+        //3)
+        result = getTotalCost3();
+        LOGGER.info("total cost 3 = " + result + "/n");
+
+        //4)
+        result = getTotalCost4();
+        LOGGER.info("total cost 4 = " + result + "/n");
+
         return result;
     }
 
+    public double getTotalCost1(){
+        double result = 0;
+        LOGGER.info("Persons: "  + '\n');
+        for (int i=0; i<this.getPersonList().size(); i++) {
+            result += getPersonList().get(i).getPersonalCost();
+            LOGGER.info(getPersonList().get(i).getClient().toString());
+        }
+        LOGGER.info("Result = " + result + '\n');
+        return result;
+    }
+
+    public double getTotalCost2(){
+        double result = 0;
+        LOGGER.info("Persons:");
+        for (InsuredPerson p : this.getPersonList()) {
+            result += p.getPersonalCost();
+            LOGGER.info(p.getClient().toString());
+        }
+        LOGGER.info("Result = " + result);
+        return result;
+    }
+
+    public double getTotalCost3(){
+        double result = 0;
+        LOGGER.info("Persons:");
+        int size = this.getPersonList().size()-1;
+        while(size>=0){
+            result += getPersonList().get(size).getPersonalCost();
+            LOGGER.info(getPersonList().get(size).getClient().toString());
+            size--;
+        }
+        LOGGER.info("Result = " + result);
+        return result;
+    }
+
+    public double getTotalCost4(){
+        double result = 0;
+        LOGGER.info("Persons: ");
+        int i=0;
+        do{
+            result += getPersonList().get(i).getPersonalCost();
+            LOGGER.info(getPersonList().get(i).getClient().toString());
+            i++;
+        }while (i!=getPersonList().size());
+        LOGGER.info("Result = " + result);
+        return result;
+    }
+
+    public double getTotalCost5(){
+        double result = 0;
+        LOGGER.info("Persons: ");
+        Iterator iterator = getPersonList().iterator();
+        while(iterator.hasNext()){
+            InsuredPerson ip = (InsuredPerson)iterator.next();
+            result += ip.getPersonalCost();
+            LOGGER.info(ip.getClient().toString());
+        }
+        LOGGER.info("Result = " + result);
+        return result;
+    }
+
+    public double getTotalCost6(){
+        double result = 0;
+        LOGGER.info("Persons: ");
+        int i=0;
+        Iterator iterator1 = getPersonList().iterator();
+        while(iterator1.hasNext()){
+
+            result += getPersonList().get(i).getPersonalCost();
+            iterator1.next();
+            i++;
+        }
+
+        Iterator iterator2 = getPersonList().iterator();
+        iterator2.forEachRemaining((insuredPerson) ->{
+            LOGGER.info(((InsuredPerson)insuredPerson).getClient().toString());
+            });
+        LOGGER.info("Result = " + result);
+        return result;
+    }
+
+    public double getTotalCost7(){
+        final double[] result = {0};
+        LOGGER.info("Persons: ");
+
+        getPersonList().forEach(person -> {
+            result[0] += person.getPersonalCost();
+            LOGGER.info(person.getClient().toString());
+        });
+        LOGGER.info("Result = " + result[0]);
+        return result[0];
+    }
+
+    public double getTotalCost8(){
+         double result = 0;
+        LOGGER.info("Persons: ");
+
+
+
+        Object[] arr = getPersonList().toArray();
+        for(int i=0; i< arr.length; i++){
+            result +=  ((InsuredPerson)arr[i]).getPersonalCost();
+//            LOGGER.info(Arrays.toString(arr));
+            LOGGER.info(arr[i].toString());
+        }
+        LOGGER.info("Result = " + result);
+        return result;
+    }
 
     /**
      * internal object Comparator, used for correct work of method "sortPersonsByName" that sort list of Insured Persons
@@ -108,7 +233,10 @@ public class Contract extends IEntity implements Serializable {
      */
     public List<InsuredPerson> sortPersonsByName(List<InsuredPerson> persons) {
 
+        LOGGER.info("Persons: " + persons + "/n");
+        LOGGER.info("sortPersonsByName: ");
         persons.sort(FIO_COMPARATOR);
+        LOGGER.info(persons.toArray()+"/n");
         return persons;
 
     }

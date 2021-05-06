@@ -21,7 +21,7 @@ public class PhysicalClient extends Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Person:" + this.getPersonType() + "\tName:" + this.getFirstName() + " " + this.getMidName()
+        return "Person:" + this.getPersonType().toString() + "\tName:" + this.getFirstName() + " " + this.getMidName()
                 + " " + this.getSurname() +"\t Address:" + this.getCity()+", st. "+
                 this.getStreet()+";\n";
     }

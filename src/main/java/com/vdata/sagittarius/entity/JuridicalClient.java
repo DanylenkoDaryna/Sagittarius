@@ -10,13 +10,14 @@ public class JuridicalClient extends Client implements Serializable {
     }
 
     public JuridicalClient(String company) {
+        setPersonType(PersonType.JURIDICAL);
         companyName=company;
     }
 
     @Override
     public String toString() {
 
-        return "Person:" + this.getPersonType() + "\tName:" + this.getCompanyName() +
+        return "Person:" + this.getPersonType().toString() + "\tName:" + this.getCompanyName() +
                 "\t Address:" + this.getCity()+", st. "+ this.getStreet()+";\n";
 
 

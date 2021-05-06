@@ -4,7 +4,7 @@ package com.vdata.sagittarius.entity;
 import javax.persistence.Entity;
 
 @Entity
-public abstract class Client extends IEntity {
+public class Client extends IEntity {
 
     private PersonType personType;
     private String city;
@@ -35,4 +35,5 @@ public abstract class Client extends IEntity {
     public void setStreet(String street) {
         this.street = street;
     }
+
 }
