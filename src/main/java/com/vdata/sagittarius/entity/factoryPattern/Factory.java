@@ -1,13 +1,10 @@
 package com.vdata.sagittarius.entity.factoryPattern;
 
-import com.vdata.sagittarius.entity.Client;
-import com.vdata.sagittarius.entity.JuridicalClient;
-import com.vdata.sagittarius.entity.PersonType;
-import com.vdata.sagittarius.entity.PhysicalClient;
+import com.vdata.sagittarius.entity.*;
 
 public class Factory {
 
-    public Client createClient(PersonType person){
+    public IClient createClient(PersonType person){
         Client client = new Client();
 
         switch (person){
@@ -24,16 +21,6 @@ public class Factory {
         }
         return client;
     }
-
-//    public JuridicalClient createClient(PersonType person){
-//            return new JuridicalClient();
-//
-//    }
-//
-//    public PhysicalClient createClient(PersonType person){
-//            return new PhysicalClient();
-//
-//    }
 
     public void someOperation(){
 

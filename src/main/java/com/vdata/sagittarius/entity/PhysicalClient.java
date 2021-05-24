@@ -8,7 +8,6 @@ public class PhysicalClient extends Client implements Serializable {
     private String firstName;
     private String midName;
     private String surname;
-    private LocalDate birthday;
 
     /**
      *
@@ -63,11 +62,5 @@ public class PhysicalClient extends Client implements Serializable {
         this.surname = surname;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
-    }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
-    }
 }

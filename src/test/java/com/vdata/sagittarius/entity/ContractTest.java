@@ -28,7 +28,6 @@ class ContractTest {
         first.setFirstName("Anny");
         first.setMidName("Parker");
         first.setSurname("Linn");
-        first.setBirthday(LocalDate.of(1997,11,15));
 
         second.setStreet("Pokrovska st. 33");
         second.setCity("Kharkiv");
@@ -39,36 +38,37 @@ class ContractTest {
         third.setFirstName("Beny");
         third.setMidName("Harbour");
         third.setSurname("Linn");
-        third.setBirthday(LocalDate.of(1995,3,1));
 
-        Contract contract = new Contract();
-        contract.setClient(second);
+//        Contract contract = new Contract();
+//        contract.setClient(second);
+//
+//        InsuredPerson ip1= new InsuredPerson();
+//        ip1.setContract(contract);
+//        ip1.setPersonalCost(99);
+//        ip1.setUniqueNum(100);
+//        ip1.setClient(first);
+//
+//        InsuredPerson ip2= new InsuredPerson();
+//        ip2.setContract(contract);
+//        ip2.setPersonalCost(10);
+//        ip2.setUniqueNum(675);
+//        ip2.setClient(third);
+//
+//
+//
+//        List<InsuredPerson> persons = new ArrayList<>();
+//        persons.add(ip1);
+//        persons.add(ip2);
+//
+//        contract.setPersonList(persons);
+//        contract.setAcceptDate(LocalDate.of(2000,9,10));
+//        contract.setStartDate(LocalDate.of(2001,1,1));
+//        contract.setEndDate(LocalDate.of(2010,12,31));
+//
+//        mainContract=contract;
+//        personList=persons;
 
-        InsuredPerson ip1= new InsuredPerson();
-        ip1.setContract(contract);
-        ip1.setPersonalCost(99);
-        ip1.setUniqueNum(100);
-        ip1.setClient(first);
 
-        InsuredPerson ip2= new InsuredPerson();
-        ip2.setContract(contract);
-        ip2.setPersonalCost(10);
-        ip2.setUniqueNum(675);
-        ip2.setClient(third);
-
-
-
-        List<InsuredPerson> persons = new ArrayList<>();
-        persons.add(ip1);
-        persons.add(ip2);
-
-        contract.setPersonList(persons);
-        contract.setAcceptDate(LocalDate.of(2000,9,10));
-        contract.setStartDate(LocalDate.of(2001,1,1));
-        contract.setEndDate(LocalDate.of(2010,12,31));
-
-        mainContract=contract;
-        personList=persons;
 
     }
 

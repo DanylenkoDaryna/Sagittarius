@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class Contract extends IEntity implements Serializable {
+public class Contract extends AEntity implements Serializable {
 
     private static final Logger LOGGER = LogManager.getLogger("com.vdata.sagittarius.Demo");
 

@@ -1,12 +1,11 @@
 package com.vdata.sagittarius.entity;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
-public abstract class IEntity {
+
+public abstract class AEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

@@ -19,10 +19,4 @@ public class SagittariusApplication {
 
 	}
 
-
-//    @Override
-//    public void run(String... strings) throws Exception {
-//
-//    }
-
 }

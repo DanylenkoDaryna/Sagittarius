@@ -4,7 +4,7 @@ package com.vdata.sagittarius.entity;
 import javax.persistence.Entity;
 
 @Entity
-public class Client extends IEntity {
+public class Client extends AEntity implements IClient {
 
     private PersonType personType;
     private String city;
