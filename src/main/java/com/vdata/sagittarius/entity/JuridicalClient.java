@@ -1,10 +1,17 @@
 package com.vdata.sagittarius.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
+@Table(name ="juridical_client")
 public class JuridicalClient extends Client implements Serializable {
 
+    @Column(name = "company_name")
     private String companyName;
+
+    @OneToOne(mappedBy = "id",  cascade=CascadeType.REMOVE, orphanRemoval = true )
+    private Client client;
 
     public JuridicalClient() {
     }
@@ -43,5 +50,13 @@ public class JuridicalClient extends Client implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }

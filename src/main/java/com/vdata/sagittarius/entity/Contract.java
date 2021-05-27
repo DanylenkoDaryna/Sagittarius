@@ -57,172 +57,172 @@ public class Contract extends AEntity implements Serializable {
      * enumerates the collection and summarizes all the individual values of the insured persons
      * Implements foreach cycle
      */
-    public double getTotalCost() {
-
-        LOGGER.info("сюди додати різні види обходу списку: /n");
-
-        //1)
-        double result = getTotalCost1();
-        LOGGER.info("total cost 1 = " + result + "/n");
-
-        //2)
-        result = getTotalCost2();
-        LOGGER.info("total cost 2 = " + result + "/n");
-
-        //3)
-        result = getTotalCost3();
-        LOGGER.info("total cost 3 = " + result + "/n");
-
-        //4)
-        result = getTotalCost4();
-        LOGGER.info("total cost 4 = " + result + "/n");
-
-        return result;
-    }
-
-    public double getTotalCost1(){
-        double result = 0;
-        LOGGER.info("Persons: "  + '\n');
-        for (int i=0; i<this.getPersonList().size(); i++) {
-            result += getPersonList().get(i).getPersonalCost();
-            LOGGER.info(getPersonList().get(i).getClient().toString());
-        }
-        LOGGER.info("Result = " + result + '\n');
-        return result;
-    }
-
-    public double getTotalCost2(){
-        double result = 0;
-        LOGGER.info("Persons:");
-        for (InsuredPerson p : this.getPersonList()) {
-            result += p.getPersonalCost();
-            LOGGER.info(p.getClient().toString());
-        }
-        LOGGER.info("Result = " + result);
-        return result;
-    }
-
-    public double getTotalCost3(){
-        double result = 0;
-        LOGGER.info("Persons:");
-        int size = this.getPersonList().size()-1;
-        while(size>=0){
-            result += getPersonList().get(size).getPersonalCost();
-            LOGGER.info(getPersonList().get(size).getClient().toString());
-            size--;
-        }
-        LOGGER.info("Result = " + result);
-        return result;
-    }
-
-    public double getTotalCost4(){
-        double result = 0;
-        LOGGER.info("Persons: ");
-        int i=0;
-        do{
-            result += getPersonList().get(i).getPersonalCost();
-            LOGGER.info(getPersonList().get(i).getClient().toString());
-            i++;
-        }while (i!=getPersonList().size());
-        LOGGER.info("Result = " + result);
-        return result;
-    }
-
-    public double getTotalCost5(){
-        double result = 0;
-        LOGGER.info("Persons: ");
-        Iterator iterator = getPersonList().iterator();
-        while(iterator.hasNext()){
-            InsuredPerson ip = (InsuredPerson)iterator.next();
-            result += ip.getPersonalCost();
-            LOGGER.info(ip.getClient().toString());
-        }
-        LOGGER.info("Result = " + result);
-        return result;
-    }
-
-    public double getTotalCost6(){
-        double result = 0;
-        LOGGER.info("Persons: ");
-        int i=0;
-        Iterator iterator1 = getPersonList().iterator();
-        while(iterator1.hasNext()){
-
-            result += getPersonList().get(i).getPersonalCost();
-            iterator1.next();
-            i++;
-        }
-
-        Iterator iterator2 = getPersonList().iterator();
-        iterator2.forEachRemaining((insuredPerson) ->{
-            LOGGER.info(((InsuredPerson)insuredPerson).getClient().toString());
-            });
-        LOGGER.info("Result = " + result);
-        return result;
-    }
-
-    public double getTotalCost7(){
-        final double[] result = {0};
-        LOGGER.info("Persons: ");
-
-        getPersonList().forEach(person -> {
-            result[0] += person.getPersonalCost();
-            LOGGER.info(person.getClient().toString());
-        });
-        LOGGER.info("Result = " + result[0]);
-        return result[0];
-    }
-
-    public double getTotalCost8(){
-         double result = 0;
-        LOGGER.info("Persons: ");
-
-
-
-        Object[] arr = getPersonList().toArray();
-        for(int i=0; i< arr.length; i++){
-            result +=  ((InsuredPerson)arr[i]).getPersonalCost();
-//            LOGGER.info(Arrays.toString(arr));
-            LOGGER.info(arr[i].toString());
-        }
-        LOGGER.info("Result = " + result);
-        return result;
-    }
+//    public double getTotalCost() {
+//
+//        LOGGER.info("сюди додати різні види обходу списку: /n");
+//
+//        //1)
+//        double result = getTotalCost1();
+//        LOGGER.info("total cost 1 = " + result + "/n");
+//
+//        //2)
+//        result = getTotalCost2();
+//        LOGGER.info("total cost 2 = " + result + "/n");
+//
+//        //3)
+//        result = getTotalCost3();
+//        LOGGER.info("total cost 3 = " + result + "/n");
+//
+//        //4)
+//        result = getTotalCost4();
+//        LOGGER.info("total cost 4 = " + result + "/n");
+//
+//        return result;
+//    }
+//
+//    public double getTotalCost1(){
+//        double result = 0;
+//        LOGGER.info("Persons: "  + '\n');
+//        for (int i=0; i<this.getPersonList().size(); i++) {
+//            result += getPersonList().get(i).getPersonalCost();
+//            LOGGER.info(getPersonList().get(i).getClient().toString());
+//        }
+//        LOGGER.info("Result = " + result + '\n');
+//        return result;
+//    }
+//
+//    public double getTotalCost2(){
+//        double result = 0;
+//        LOGGER.info("Persons:");
+//        for (InsuredPerson p : this.getPersonList()) {
+//            result += p.getPersonalCost();
+//            LOGGER.info(p.getClient().toString());
+//        }
+//        LOGGER.info("Result = " + result);
+//        return result;
+//    }
+//
+//    public double getTotalCost3(){
+//        double result = 0;
+//        LOGGER.info("Persons:");
+//        int size = this.getPersonList().size()-1;
+//        while(size>=0){
+//            result += getPersonList().get(size).getPersonalCost();
+//            LOGGER.info(getPersonList().get(size).getClient().toString());
+//            size--;
+//        }
+//        LOGGER.info("Result = " + result);
+//        return result;
+//    }
+//
+//    public double getTotalCost4(){
+//        double result = 0;
+//        LOGGER.info("Persons: ");
+//        int i=0;
+//        do{
+//            result += getPersonList().get(i).getPersonalCost();
+//            LOGGER.info(getPersonList().get(i).getClient().toString());
+//            i++;
+//        }while (i!=getPersonList().size());
+//        LOGGER.info("Result = " + result);
+//        return result;
+//    }
+//
+//    public double getTotalCost5(){
+//        double result = 0;
+//        LOGGER.info("Persons: ");
+//        Iterator iterator = getPersonList().iterator();
+//        while(iterator.hasNext()){
+//            InsuredPerson ip = (InsuredPerson)iterator.next();
+//            result += ip.getPersonalCost();
+//            LOGGER.info(ip.getClient().toString());
+//        }
+//        LOGGER.info("Result = " + result);
+//        return result;
+//    }
+//
+//    public double getTotalCost6(){
+//        double result = 0;
+//        LOGGER.info("Persons: ");
+//        int i=0;
+//        Iterator iterator1 = getPersonList().iterator();
+//        while(iterator1.hasNext()){
+//
+//            result += getPersonList().get(i).getPersonalCost();
+//            iterator1.next();
+//            i++;
+//        }
+//
+//        Iterator iterator2 = getPersonList().iterator();
+//        iterator2.forEachRemaining((insuredPerson) ->{
+//            LOGGER.info(((InsuredPerson)insuredPerson).getClient().toString());
+//            });
+//        LOGGER.info("Result = " + result);
+//        return result;
+//    }
+//
+//    public double getTotalCost7(){
+//        final double[] result = {0};
+//        LOGGER.info("Persons: ");
+//
+//        getPersonList().forEach(person -> {
+//            result[0] += person.getPersonalCost();
+//            LOGGER.info(person.getClient().toString());
+//        });
+//        LOGGER.info("Result = " + result[0]);
+//        return result[0];
+//    }
+//
+//    public double getTotalCost8(){
+//         double result = 0;
+//        LOGGER.info("Persons: ");
+//
+//
+//
+//        Object[] arr = getPersonList().toArray();
+//        for(int i=0; i< arr.length; i++){
+//            result +=  ((InsuredPerson)arr[i]).getPersonalCost();
+////            LOGGER.info(Arrays.toString(arr));
+//            LOGGER.info(arr[i].toString());
+//        }
+//        LOGGER.info("Result = " + result);
+//        return result;
+//    }
 
     /**
      * internal object Comparator, used for correct work of method "sortPersonsByName" that sort list of Insured Persons
      * by alphabet
      */
-    private static final Comparator FIO_COMPARATOR = new Comparator() {
-        /** Override method for sorting that compare FIO Strings
-         * @param o1 InsuredPerson one
-         * @param o2 InsuredPerson two
-         * @return int difference between Strings FIO
-         */
-        @Override
-        public int compare(Object o1, Object o2) {
-            InsuredPerson person1 = (InsuredPerson) o1;
-            InsuredPerson person2 = (InsuredPerson) o2;
-
-            return person1.getClient().getSurname().compareTo(person2.getClient().getSurname());
-        }
-    };
-
-
-    /**
-     * Method for sorting Insured Persons by dates of their birthday and watching in console
-     * For correct comparison class InsuredPerson implements method compareTo
-     *
-     * @param persons ArrayList with type of objects - InsuredPerson
-     * @return sorted ArrayList with type - InsuredPerson
-     */
-    public List<InsuredPerson> sortPersonsByDate(List<InsuredPerson> persons) {
-
-        persons.sort( (s1,s2) -> (s1.getClient().getBirthday().compareTo( s2.getClient().getBirthday() ) ) );
-
-        return persons;
-
-    }
+//    private static final Comparator FIO_COMPARATOR = new Comparator() {
+//        /** Override method for sorting that compare FIO Strings
+//         * @param o1 InsuredPerson one
+//         * @param o2 InsuredPerson two
+//         * @return int difference between Strings FIO
+//         */
+//        @Override
+//        public int compare(Object o1, Object o2) {
+//            InsuredPerson person1 = (InsuredPerson) o1;
+//            InsuredPerson person2 = (InsuredPerson) o2;
+//
+//            return person1.getClient().getSurname().compareTo(person2.getClient().getSurname());
+//        }
+//    };
+//
+//
+//    /**
+//     * Method for sorting Insured Persons by dates of their birthday and watching in console
+//     * For correct comparison class InsuredPerson implements method compareTo
+//     *
+//     * @param persons ArrayList with type of objects - InsuredPerson
+//     * @return sorted ArrayList with type - InsuredPerson
+//     */
+//    public List<InsuredPerson> sortPersonsByDate(List<InsuredPerson> persons) {
+//
+//        persons.sort( (s1,s2) -> (s1.getClient().getBirthday().compareTo( s2.getClient().getBirthday() ) ) );
+//
+//        return persons;
+//
+//    }
 
     /**
      * Method for sorting Insured Persons by FIO`s by alphabet and watching in console
@@ -231,15 +231,15 @@ public class Contract extends AEntity implements Serializable {
      * @param persons ArrayList with type of objects - InsuredPerson
      * @return sorted ArrayList with type - InsuredPerson
      */
-    public List<InsuredPerson> sortPersonsByName(List<InsuredPerson> persons) {
-
-        LOGGER.info("Persons: " + persons + "/n");
-        LOGGER.info("sortPersonsByName: ");
-        persons.sort(FIO_COMPARATOR);
-        LOGGER.info(persons.toArray()+"/n");
-        return persons;
-
-    }
+//    public List<InsuredPerson> sortPersonsByName(List<InsuredPerson> persons) {
+//
+//        LOGGER.info("Persons: " + persons + "/n");
+//        LOGGER.info("sortPersonsByName: ");
+//        persons.sort(FIO_COMPARATOR);
+//        LOGGER.info(persons.toArray()+"/n");
+//        return persons;
+//
+//    }
 
     /**
      * Method for searching Insured Person in ArrayList of persons by it`s unique id
@@ -264,59 +264,59 @@ public class Contract extends AEntity implements Serializable {
      * Method save the object Contract and all it`s fields: id, dates, Client, PersonList
      * object OutputStreamWriter serialize object Contract into one string with line separators
      */
-    public void saveCSV() {
-
-        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(".\\src\\Contract"+this.getId()+".csv"), "UTF-8"));) {
-
-            bw.write("id;acceptDate;startDate;endDate;client;personList");
-            bw.newLine();
-            StringBuilder one = new StringBuilder();
-            one.append(this.getId()).append(CSV_SEPARATOR).append(
-                    this.getAcceptDate()).append(CSV_SEPARATOR).append(
-                    this.getStartDate()).append(CSV_SEPARATOR).append(
-                    this.getEndDate()).append(CSV_SEPARATOR);
-            one.append(this.getClient().getPersonType()).append(",");
-
-            if("PHYSICAL".equals(this.getClient().getPersonType().toString())){
-                PhysicalClient pc = (PhysicalClient) this.getClient();
-                one.append(pc.getFirstName()).append(",");
-                one.append(pc.getMidName()).append(",");
-                one.append(pc.getSurname()).append(",");
-            }else if("JURIDICAL".equals(this.getClient().getPersonType().toString())) {
-                JuridicalClient jc = (JuridicalClient) this.getClient();
-                one.append(jc.getCompanyName()).append(",");
-            }
-            one.append(this.getClient().getCity()).append(",");
-            one.append(this.getClient().getStreet()).append(",");
-            one.append(this.getClient().getId()).append(",");
-            one.append(CSV_SEPARATOR);
-            bw.write(one.toString());
-
-            for (InsuredPerson ip1 : this.getPersonList()) {
-                StringBuilder oneLine = new StringBuilder();
-                oneLine.append(ip1.getId());
-                oneLine.append(",");
-                oneLine.append(ip1.getClient().getFirstName());
-                oneLine.append(",");
-                oneLine.append(ip1.getClient().getMidName());
-                oneLine.append(",");
-                oneLine.append(ip1.getClient().getSurname());
-                oneLine.append(",");
-                oneLine.append(ip1.getClient().getBirthday());
-                oneLine.append(",");
-                oneLine.append(ip1.getPersonalCost());
-                oneLine.append("/");
-                bw.write(oneLine.toString());
-            }
-
-            bw.write(System.lineSeparator());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    public void saveCSV() {
+//
+//        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+//                new FileOutputStream(".\\src\\Contract"+this.getId()+".csv"), "UTF-8"));) {
+//
+//            bw.write("id;acceptDate;startDate;endDate;client;personList");
+//            bw.newLine();
+//            StringBuilder one = new StringBuilder();
+//            one.append(this.getId()).append(CSV_SEPARATOR).append(
+//                    this.getAcceptDate()).append(CSV_SEPARATOR).append(
+//                    this.getStartDate()).append(CSV_SEPARATOR).append(
+//                    this.getEndDate()).append(CSV_SEPARATOR);
+//            one.append(this.getClient().getPersonType()).append(",");
+//
+//            if("PHYSICAL".equals(this.getClient().getPersonType().toString())){
+//                PhysicalClient pc = (PhysicalClient) this.getClient();
+//                one.append(pc.getFirstName()).append(",");
+//                one.append(pc.getMidName()).append(",");
+//                one.append(pc.getSurname()).append(",");
+//            }else if("JURIDICAL".equals(this.getClient().getPersonType().toString())) {
+//                JuridicalClient jc = (JuridicalClient) this.getClient();
+//                one.append(jc.getCompanyName()).append(",");
+//            }
+//            one.append(this.getClient().getCity()).append(",");
+//            one.append(this.getClient().getStreet()).append(",");
+//            one.append(this.getClient().getId()).append(",");
+//            one.append(CSV_SEPARATOR);
+//            bw.write(one.toString());
+//
+//            for (InsuredPerson ip1 : this.getPersonList()) {
+//                StringBuilder oneLine = new StringBuilder();
+//                oneLine.append(ip1.getId());
+//                oneLine.append(",");
+//                oneLine.append(ip1.getClient().getFirstName());
+//                oneLine.append(",");
+//                oneLine.append(ip1.getClient().getMidName());
+//                oneLine.append(",");
+//                oneLine.append(ip1.getClient().getSurname());
+//                oneLine.append(",");
+//                oneLine.append(ip1.getClient().getBirthday());
+//                oneLine.append(",");
+//                oneLine.append(ip1.getPersonalCost());
+//                oneLine.append("/");
+//                bw.write(oneLine.toString());
+//            }
+//
+//            bw.write(System.lineSeparator());
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
 
     /**

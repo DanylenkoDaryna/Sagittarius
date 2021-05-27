@@ -71,78 +71,78 @@ class ContractTest {
 
 
     }
-
-    @Test
-    void getTotalCost() {
-
-        LOGGER.info( "test one");
-        LOGGER.info( mainContract.getTotalCost());
-
-
-    }
-
-    @Test
-    void getTotalCost1() {
-
-        LOGGER.info( "test one");
-        assert(mainContract.getTotalCost1()==109);
-
-    }
-
-    @Test
-    void getTotalCost2() {
-
-        LOGGER.info( "test 2");
-        assert(mainContract.getTotalCost2()==109);
-
-    }
-
-    @Test
-    void getTotalCost3() {
-
-        LOGGER.info( "test 3");
-        assert(mainContract.getTotalCost3()==109);
-
-    }
-
-    @Test
-    void getTotalCost4() {
-
-        LOGGER.info( "test 4");
-        assert(mainContract.getTotalCost4()==109);
-
-    }
-
-    @Test
-    void getTotalCost5() {
-
-        LOGGER.info( "test 5");
-        assert(mainContract.getTotalCost5()==109);
-
-    }
-
-    @Test
-    void getTotalCost6() {
-
-        LOGGER.info( "test 6");
-        assert(mainContract.getTotalCost6()==109);
-
-    }
-
-    @Test
-    void getTotalCost7() {
-
-        LOGGER.info( "test 7");
-        assert(mainContract.getTotalCost7()==109);
-
-    }
-
-    @Test
-    void getTotalCost8() {
-
-        LOGGER.info( "test 8");
-        assert(mainContract.getTotalCost8()==109);
-
-    }
+//
+//    @Test
+//    void getTotalCost() {
+//
+//        LOGGER.info( "test one");
+//        LOGGER.info( mainContract.getTotalCost());
+//
+//
+//    }
+//
+//    @Test
+//    void getTotalCost1() {
+//
+//        LOGGER.info( "test one");
+//        assert(mainContract.getTotalCost1()==109);
+//
+//    }
+//
+//    @Test
+//    void getTotalCost2() {
+//
+//        LOGGER.info( "test 2");
+//        assert(mainContract.getTotalCost2()==109);
+//
+//    }
+//
+//    @Test
+//    void getTotalCost3() {
+//
+//        LOGGER.info( "test 3");
+//        assert(mainContract.getTotalCost3()==109);
+//
+//    }
+//
+//    @Test
+//    void getTotalCost4() {
+//
+//        LOGGER.info( "test 4");
+//        assert(mainContract.getTotalCost4()==109);
+//
+//    }
+//
+//    @Test
+//    void getTotalCost5() {
+//
+//        LOGGER.info( "test 5");
+//        assert(mainContract.getTotalCost5()==109);
+//
+//    }
+//
+//    @Test
+//    void getTotalCost6() {
+//
+//        LOGGER.info( "test 6");
+//        assert(mainContract.getTotalCost6()==109);
+//
+//    }
+//
+//    @Test
+//    void getTotalCost7() {
+//
+//        LOGGER.info( "test 7");
+//        assert(mainContract.getTotalCost7()==109);
+//
+//    }
+//
+//    @Test
+//    void getTotalCost8() {
+//
+//        LOGGER.info( "test 8");
+//        assert(mainContract.getTotalCost8()==109);
+//
+//    }
 
 }

@@ -1,13 +1,25 @@
 package com.vdata.sagittarius.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 
+
+@Entity
+@Table(name ="physical_client")
 public class PhysicalClient extends Client implements Serializable {
 
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "mid_name")
     private String midName;
+
+    @Column(name = "surname")
     private String surname;
+
+    @OneToOne(mappedBy = "id",  cascade= CascadeType.REMOVE, orphanRemoval = true )
+    private Client client;
 
     /**
      *
@@ -15,7 +27,7 @@ public class PhysicalClient extends Client implements Serializable {
      * Used for avoiding NullPointerExeption
      */
     public PhysicalClient() {
-
+        client = new Client();
     }
 
     @Override
@@ -62,5 +74,11 @@ public class PhysicalClient extends Client implements Serializable {
         this.surname = surname;
     }
 
+    public Client getClient() {
+        return client;
+    }
 
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }

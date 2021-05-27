@@ -1,6 +1,8 @@
 package com.vdata.sagittarius.entity;
 
+import com.vdata.sagittarius.dao.ClientDao;
 import com.vdata.sagittarius.entity.factoryPattern.Factory;
+import com.vdata.sagittarius.service.ClientService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
@@ -40,8 +42,25 @@ class PhysicalClientTest {
         PhysicalClient pc1 = new PhysicalClient();
         PhysicalClient pc2 = new PhysicalClient();
 
+        pc1.setFirstName("Niko");
+        pc1.setMidName("Feliksovych");
+        pc1.setSurname("Mitzkevych");
+        pc1.getClient().setCity("Krakiv");
+        pc1.getClient().setStreet("Podolska st. 43");
+        pc1.getClient().setPersonType(PersonType.PHYSICAL);
 
-        assert(pc1.equals(pc2));
+        pc2.setFirstName("Sara");
+        pc1.setMidName("Feliksovych");
+        pc1.setSurname("Mitzkevych");
+        pc1.getClient().setCity("Viden");
+        pc1.getClient().setStreet("Ragulska st. 50");
+        pc1.getClient().setPersonType(PersonType.PHYSICAL);
+
+        ClientService cs = new ClientService();
+        cs.createClient(pc1);
+        cs.createClient(pc2);
+
+        assert(pc1.getSurname().equals(pc2.getSurname()));
 
 
     }
